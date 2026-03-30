@@ -164,7 +164,7 @@ psql "postgres://tsdbadmin:<password>@<host>:<port>/tsdb?sslmode=require"
 - **Automatic Updates**: Real-time continuous aggregate refresh vs PostgreSQL materialized view limitations
 - **Production-Ready Policies**: Automatic compression, tiered storage, and data retention configured in minutes
 
-## Why TigerData for Oil & Gas
+## Why TigerData for Oil & Gas Production Monitoring and Optimization
 
 | Challenge | TigerData Solution |
 |---|---|
