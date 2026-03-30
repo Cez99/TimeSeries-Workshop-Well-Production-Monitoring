@@ -156,6 +156,35 @@ Or connect interactively and paste sections as you go:
 psql "postgres://tsdbadmin:<password>@<host>:<port>/tsdb?sslmode=require"
 ```
 
+## Loading the Grafana Dashboard
+
+### 1. Download the dashboard JSON
+The sample dashboard is included in this repo as:
+grafana_sample_well_production_dashboard.json
+
+### 2. Open Grafana
+Navigate to your Grafana instance in a browser.
+
+### 3. Import the dashboard
+Click Dashboards → Import in the left sidebar.
+Choose Upload JSON file and select grafana_sample_well_production_dashboard.json.
+
+### 4. Connect to your PostgreSQL (TigerData) data source
+When prompted, select your PostgreSQL/TigerData data source.
+
+Ensure the connection string and credentials match your TigerData Cloud instance.
+Example:
+
+```sql
+postgres://tsdbadmin:<password>@<host>:<port>/tsdb?sslmode=require
+```
+
+### 5. View the dashboard
+Once imported, you should see panels for Oil Rate, Gas Rate, Water Rate, and Wellhead Pressure.
+Adjust the time range (top right) to see historical data.
+
+
+
 ## Workshop Highlights
 
 - **Real-World Schema**: 20 wells across Permian Basin, Eagle Ford, Bakken, and Marcellus — with realistic production profiles, pressure ranges, and well statuses
@@ -174,6 +203,7 @@ psql "postgres://tsdbadmin:<password>@<host>:<port>/tsdb?sslmode=require"
 | Complex joins with well/field metadata | Full PostgreSQL — joins, window functions, CTEs |
 | SCADA and historian integration | Standard PostgreSQL wire protocol — no new connectors |
 | Compliance and long-term retention | Tiered storage retains all data; retention policies control raw costs |
+
 
 ## License
 
