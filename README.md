@@ -155,6 +155,7 @@ Or connect interactively and paste sections as you go:
 psql "postgres://tsdbadmin:<password>@<host>:<port>/tsdb?sslmode=require"
 ```
 
+
 ## Loading the Grafana Dashboard
 
 ### 1. Download the dashboard JSON
@@ -181,6 +182,7 @@ postgres://tsdbadmin:<password>@<host>:<port>/tsdb?sslmode=require
 ### 5. View the dashboard
 Once imported, you should see panels for Oil Rate, Gas Rate, Water Rate, and Wellhead Pressure.
 Adjust the time range (top right) to see historical data.
+
 
 
 
