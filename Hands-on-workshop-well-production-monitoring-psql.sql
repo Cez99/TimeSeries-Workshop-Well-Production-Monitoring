@@ -534,3 +534,100 @@ WHERE hypertable_name = 'well_production';
 -- The continuous aggregate retains the daily summaries indefinitely.
 
 SELECT add_retention_policy('well_production', INTERVAL '1 year');
+
+
+-- ============================================================================
+-- ## Add spatial capabilities to wells
+-- We add a geometry column and spatial index to enable
+-- fast spatial queries like "wells within radius" or "nearest wells".
+-- ============================================================================
+
+-- Enable PostGIS extension
+CREATE EXTENSION IF NOT EXISTS postgis;
+
+-- Add a geometry column based on lat/lon
+ALTER TABLE wells
+ADD COLUMN geom geometry(Point, 4326);
+
+-- Populate geom column from latitude and longitude
+UPDATE wells
+SET geom = ST_SetSRID(ST_MakePoint(longitude, latitude), 4326);
+
+-- Create a GiST spatial index for fast spatial queries
+CREATE INDEX idx_wells_geom ON wells USING GIST (geom);
+
+-- Spatial + production query examples
+-- We join wells to well_production to bring in the latest
+-- production metrics for each well.
+
+-- Example 1: Wells within 10 km of a given location, last 7 days
+SELECT
+    w.id,
+    w.well_name,
+    w.latitude,
+    w.longitude,
+    wp.time AS prod_time,
+    wp.oil_rate,
+    wp.gas_rate,
+    wp.water_rate,
+    wp.wellhead_pressure,
+    wp.wellhead_temperature,
+    wp.choke_size,
+    wp.downhole_pressure
+FROM wells w
+JOIN well_production wp
+    ON wp.well_id = w.id
+    AND wp.time >= NOW() - INTERVAL '7 days'  -- last 7 days
+WHERE ST_DWithin(
+    w.geom::geography,
+    ST_SetSRID(ST_MakePoint(-102.15, 31.90), 4326)::geography,
+    10000
+);
+
+-- Example 2: 5 nearest wells, last 7 days
+-- Returns all production points within 7 days for nearest wells
+SELECT
+    w.id,
+    w.well_name,
+    w.latitude,
+    w.longitude,
+    wp.time AS prod_time,
+    wp.oil_rate,
+    wp.gas_rate,
+    wp.water_rate,
+    wp.wellhead_pressure,
+    wp.wellhead_temperature,
+    wp.choke_size,
+    wp.downhole_pressure,
+    ST_Distance(
+        w.geom::geography,
+        ST_SetSRID(ST_MakePoint(-99.75, 28.42), 4326)::geography
+    ) AS distance_m
+FROM wells w
+JOIN well_production wp
+    ON wp.well_id = w.id
+    AND wp.time >= NOW() - INTERVAL '7 days'
+ORDER BY w.geom <-> ST_SetSRID(ST_MakePoint(-99.75, 28.42), 4326)
+LIMIT 5;
+
+-- Example 3: Wells inside a bounding box, last 7 days
+SELECT
+    w.id,
+    w.well_name,
+    w.latitude,
+    w.longitude,
+    wp.time AS prod_time,
+    wp.oil_rate,
+    wp.gas_rate,
+    wp.water_rate,
+    wp.wellhead_pressure,
+    wp.wellhead_temperature,
+    wp.choke_size,
+    wp.downhole_pressure
+FROM wells w
+JOIN well_production wp
+    ON wp.well_id = w.id
+    AND wp.time >= NOW() - INTERVAL '7 days'
+WHERE w.geom && ST_MakeEnvelope(-103, 27, -99, 32, 4326);
+
+
