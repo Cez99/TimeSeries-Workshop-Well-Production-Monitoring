@@ -221,8 +221,8 @@ SELECT
   GREATEST(1000, 4000 + (well_id * 17 % 1500) + random() * 600 - 300)  AS downhole_pressure
 FROM
   generate_series(
-    NOW() - INTERVAL '90 days',
-    NOW(),
+    date_trunc('day', NOW()) - INTERVAL '90 days',  -- start 90 days ago
+    date_trunc('day', NOW()) - INTERVAL '1 second', -- end of yesterday
     INTERVAL '15 minutes'
   ) AS g1(time),
   generate_series(1, 20) AS g2(well_id);
@@ -331,10 +331,10 @@ SELECT
   w.well_name,
   w.field_name,
   w.operator,
-  ROUND(AVG(p.oil_rate)::NUMERIC, 1)                                              AS avg_oil_bopd,
-  ROUND(AVG(p.wellhead_pressure)::NUMERIC, 0)                                     AS avg_whp_psi,
-  ROUND(AVG(p.downhole_pressure)::NUMERIC, 0)                                     AS avg_dhp_psi,
-  ROUND((AVG(p.downhole_pressure) - AVG(p.wellhead_pressure))::NUMERIC, 0)       AS pressure_drawdown_psi,
+  ROUND(AVG(p.oil_rate)::NUMERIC, 1)                                       AS avg_oil_bopd,
+  ROUND(AVG(p.wellhead_pressure)::NUMERIC, 0)                              AS avg_whp_psi,
+  ROUND(AVG(p.downhole_pressure)::NUMERIC, 0)                              AS avg_dhp_psi,
+  ROUND((AVG(p.downhole_pressure) - AVG(p.wellhead_pressure))::NUMERIC, 0) AS pressure_drawdown_psi,
   CASE
     WHEN AVG(p.wellhead_pressure) < 1500 THEN 'LOW PRESSURE — INVESTIGATE'
     WHEN AVG(p.oil_rate) < 150           THEN 'LOW PRODUCTION — REVIEW'
@@ -378,6 +378,7 @@ SELECT compress_chunk(c, true) FROM show_chunks('well_production') c;
 -- ============================================================================
 -- The same query on the compressed hypertable runs faster because
 -- columnar storage reduces I/O and the sparse indexes skip irrelevant segments.
+-- Note: your compression ratio may vary depending on span of data ingested and data cardinality
 
 SELECT
   pg_size_pretty(before_compression_total_bytes) AS before_compression,
