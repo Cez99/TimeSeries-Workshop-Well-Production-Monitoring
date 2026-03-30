@@ -94,7 +94,7 @@ TigerData partitions the telemetry table into weekly time-based chunks automatic
 Configurable data volume via psql variable — adjust `history_days` to generate more or less history:
 
 ```sql
-\set history_days 90   -- 90 days × 20 wells × 96 readings/day ≈ 172,800 rows
+-- 90 days × 20 wells × 96 readings/day ≈ 172,800 rows
 
 INSERT INTO well_production (time, well_id, oil_rate, gas_rate, ...)
 SELECT time, well_id, ...
