@@ -186,15 +186,14 @@ SELECT * FROM wells ORDER BY field_name, well_name;
 --
 -- CONFIGURABLE PARAMETERS — adjust these to control data volume:
 -- ---------------------------------------------------------------
---   \set history_days 90    default: 90 days (~172,800 rows)
+-- default: 90 days (~172,800 rows)
 --
 --   Volume reference:
 --     30  days × 20 wells × 96 readings/day =   57,600 rows
 --     90  days × 20 wells × 96 readings/day =  172,800 rows
 --     365 days × 20 wells × 96 readings/day =  700,800 rows
 --
--- NOTE: \set is a psql command and will not work in the TigerData Console UI.
--- If using the UI, replace :history_days below with a literal number, e.g. 90.
+-- NOTE: Edit the INTERVAL literal directly, e.g. INTERVAL '30 days' or INTERVAL '365 days'.
 -- ---------------------------------------------------------------
 
 \set history_days 90
@@ -224,7 +223,7 @@ SELECT
   GREATEST(1000, 4000 + (well_id * 17 % 1500) + random() * 600 - 300)  AS downhole_pressure
 FROM
   generate_series(
-    NOW() - (:history_days || ' days')::INTERVAL,
+    NOW() - INTERVAL '90 days',
     NOW(),
     INTERVAL '15 minutes'
   ) AS g1(time),
