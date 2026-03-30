@@ -367,9 +367,11 @@ ORDER BY avg_oil_bopd DESC;
 
 CALL add_columnstore_policy('well_production', after => INTERVAL '7 days');
 
--- Manually compress all existing chunks to see immediate storage savings
+-- Optionally, manually compress all chunks to see immediate storage savings
 -- (the policy only applies to future chunks as they age past the threshold):
+
 SELECT compress_chunk(c, true) FROM show_chunks('well_production') c;
+
 -- SELECT decompress_chunk(c, true) FROM show_chunks('well_production') c;
 
 
