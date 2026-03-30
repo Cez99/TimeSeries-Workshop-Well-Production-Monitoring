@@ -114,8 +114,6 @@ Volume reference:
 | 90 | ~172,800 |
 | 365 | ~700,800 |
 
-> **Note**: `\set` is a psql command. When using the TigerData Console UI, replace `:history_days` with a literal integer (e.g. `90`).
-
 ### 3. Columnar Compression
 Automatically compress production telemetry older than 7 days:
 
