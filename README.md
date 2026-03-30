@@ -16,6 +16,7 @@ This workshop shows how to build a production-grade well monitoring database on 
 - **Real-Time Updates**: Materialized views that reflect live telemetry without manual refresh
 - **Tiered Storage**: Hot/warm/cold data management on S3 for multi-year production history
 - **Data Retention**: Automated lifecycle policies for raw telemetry
+- **Geospatial queries using PostGIS** : Find wells within a radius of a point, Filter wells by bounding box
 
 ## Contents
 
