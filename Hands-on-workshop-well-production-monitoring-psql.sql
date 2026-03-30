@@ -196,8 +196,6 @@ SELECT * FROM wells ORDER BY field_name, well_name;
 -- NOTE: Edit the INTERVAL literal directly, e.g. INTERVAL '30 days' or INTERVAL '365 days'.
 -- ---------------------------------------------------------------
 
-\set history_days 90
-
 INSERT INTO well_production (
   time, well_id,
   oil_rate, gas_rate, water_rate,
