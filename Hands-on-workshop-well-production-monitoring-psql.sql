@@ -43,7 +43,6 @@
 -- ============================================================================
 -- (highlight and run this block to reset the workshop environment)
 
-DROP MATERIALIZED VIEW IF EXISTS daily_well_production CASCADE;
 DROP TABLE IF EXISTS well_production CASCADE;
 DROP TABLE IF EXISTS wells CASCADE;
 
