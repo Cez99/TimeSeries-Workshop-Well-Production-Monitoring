@@ -76,12 +76,12 @@ CREATE TABLE well_production (
   downhole_pressure     DOUBLE PRECISION,    -- psi
   FOREIGN KEY (well_id) REFERENCES wells (id)
 ) WITH (
-  tsdb.hypertable,
-  tsdb.partition_column   = 'time',
-  tsdb.enable_columnstore = true,
-  tsdb.segmentby          = 'well_id',
-  tsdb.orderby            = 'time DESC',
-  tsdb.sparse_index       = 'minmax(wellhead_pressure), minmax(oil_rate)'
+  tsdb.hypertable,                               -- Make this table a TimescaleDB hypertable for efficient time-series storage
+  tsdb.partition_column   = 'time',              -- Partition data by the 'time' column
+  tsdb.enable_columnstore = true,                -- Enable columnar storage for better compression and query performance
+  tsdb.segmentby          = 'well_id',           -- Segment the hypertable by 'well_id' for faster per-well queries
+  tsdb.orderby            = 'time DESC',         -- Order data by timestamp descending
+  tsdb.sparse_index       = 'minmax(wellhead_pressure), minmax(oil_rate)'   -- Sparse indexes for efficient min/max queries on these columns
 );
 ```
 
