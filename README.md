@@ -183,7 +183,7 @@ postgres://tsdbadmin:<password>@<host>:<port>/tsdb?sslmode=require
 Once imported, you should see panels for Oil Rate, Gas Rate, Water Rate, and Wellhead Pressure.
 Adjust the time range (top right) to see historical data.
 
-![Grafana Sample](https://play.grafana.org/d/rUpVRdamz/dashboard-links-with-variables?var-interval=1h&orgId=1&from=now-24h&to=now&timezone=browser&var-app=$__all) 
+![Grafana Sample]([https://play.grafana.org/d/rUpVRdamz/dashboard-links-with-variables?var-interval=1h&orgId=1&from=now-24h&to=now&timezone=browser&var-app=$__all](https://grafana.com/docs/grafana/latest/fundamentals/dashboards-overview/)) 
 
 
 ## Workshop Highlights
