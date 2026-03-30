@@ -199,7 +199,7 @@ Adjust the time range (top right) to see historical data.
 | Challenge | TigerData Solution |
 |---|---|
 | Petabytes of production history | 90%+ compression + tiered S3 storage |
-| 15-min readings from 100s of wells | High-ingest hypertables with chunk auto-partitioning |
+| 15-min readings from 1000's of wells | High-ingest hypertables with chunk auto-partitioning |
 | Dashboards spanning years of data | Continuous aggregates — pre-computed, auto-refreshing |
 | Complex joins with well/field metadata | Full PostgreSQL — joins, window functions, CTEs |
 | SCADA and historian integration | Standard PostgreSQL wire protocol — no new connectors |
