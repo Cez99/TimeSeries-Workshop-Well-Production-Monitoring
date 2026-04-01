@@ -318,6 +318,12 @@ GROUP BY day
 ORDER BY day;
 
 
+-- Remember the time it took to run the query above. After enabling
+-- compression and creating the continuous aggregate, run the same
+-- query on the c-agg and compare the execution time.
+
+
+
 -- ----------------------------------------------------------------------------
 -- Query 3: Well Performance Ranking and Pressure Anomaly Detection
 -- ----------------------------------------------------------------------------
@@ -347,12 +353,6 @@ WHERE p.time >= NOW() - INTERVAL '7 days'
   AND w.status = 'Active'
 GROUP BY w.well_name, w.field_name, w.operator
 ORDER BY avg_oil_bopd DESC;
-
-
--- Remember the time it took to run the query above. After enabling
--- compression and creating the continuous aggregate, run the same
--- query on the c-agg and compare the execution time.
-
 
 -- ============================================================================
 -- ## Enable Columnarstore (Compression)
