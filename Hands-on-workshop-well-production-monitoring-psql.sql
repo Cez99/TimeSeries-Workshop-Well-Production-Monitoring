@@ -211,18 +211,19 @@ SELECT
   GREATEST(0, 1000 + (well_id * 47 % 3000) + random() * 300 - 150)      AS gas_rate,
   -- Water cut varies by well maturity (bbl/day)
   GREATEST(0, 80 + (well_id * 13 % 250) + random() * 40 - 20)           AS water_rate,
-  -- Wellhead pressure: typical range 1500–3500 psi
-  GREATEST(500, 2200 + (well_id * 11 % 800) + random() * 400 - 200)     AS wellhead_pressure,
+  -- Wellhead pressure: adjusted to 8,000–12,000 psi
+  GREATEST(8000, 10000 + (well_id * 11 % 2000) + random() * 1000 - 500) AS wellhead_pressure,
   -- Wellhead temperature: 140–200 °F
   140 + (well_id % 10) * 3 + random() * 20                              AS wellhead_temperature,
   -- Choke size: 16–48 / 64ths of an inch
   16 + ((well_id * 3 + EXTRACT(DOY FROM time)::INT) % 8) * 4            AS choke_size,
   -- Downhole pressure: always higher than wellhead
-  GREATEST(1000, 4000 + (well_id * 17 % 1500) + random() * 600 - 300)  AS downhole_pressure
+  GREATEST(12000, 13000 + (well_id * 17 % 2000) + random() * 1000 - 500) AS downhole_pressure
+
 FROM
   generate_series(
-    date_trunc('day', NOW()) - INTERVAL '90 days',  -- start 90 days ago
-    date_trunc('day', NOW()) - INTERVAL '1 second', -- end of yesterday
+    date_trunc('day', NOW()) - INTERVAL '90 days',
+    date_trunc('day', NOW()) - INTERVAL '1 second',
     INTERVAL '15 minutes'
   ) AS g1(time),
   generate_series(1, 20) AS g2(well_id);
