@@ -366,6 +366,8 @@ ORDER BY avg_oil_bopd DESC;
 -- threshold. Keep the most recent 7 days uncompressed for fast SCADA ingest,
 -- and let TigerData compress everything older automatically.
 
+-- Columnstore is already enabled via tsdb.enable_columnstore = true at 
+-- table creation — no separate policy call needed.
 CALL add_columnstore_policy('well_production', after => INTERVAL '7 days');
 
 -- Optionally, manually compress all chunks to see immediate storage savings
