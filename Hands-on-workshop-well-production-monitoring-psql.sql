@@ -588,7 +588,6 @@ WHERE ST_DWithin(
 );
 
 -- Example 2: 5 nearest wells, last 7 days
--- Returns all production points within 7 days for nearest wells
 SELECT
     w.id,
     w.well_name,
